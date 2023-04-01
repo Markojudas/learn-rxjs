@@ -2,6 +2,18 @@
 
 [Learn RxJS - Documentation](https://www.learnrxjs.io/)
 
+- [Learn RxJS](#learn-rxjs)
+  - [Introduction](#introduction)
+  - [Getting familiar with RxJS Primer](#getting-familiar-with-rxjs-primer)
+    - [What is an Observable?](#what-is-an-observable)
+    - [Subscription](#subscription)
+    - [Operators](#operators)
+    - [Pipe](#pipe)
+    - [Operators can be grouped into common categories](#operators-can-be-grouped-into-common-categories)
+      - [Creation operators](#creation-operators)
+      - [Combination operators](#combination-operators)
+      - [Error handling operators](#error-handling-operators)
+
 ## Introduction
 
 [RxJS](https://github.com/ReactiveX/rxjs) is one of the hottest libraries in web development today. Offering a powerful, functional approach for dealing with events and with integration points into a growing number of frameworks, libraries, and utilities, the case for learning Rx has never been more appealing. Couple this with the ability to utilize your knowledge across [nearly any language](http://reactivex.io/languages.html), having a solid grasp on reactive programming and what it can offer seems like a no-brainer.
@@ -164,13 +176,13 @@ inputValue
 
 ### Operators can be grouped into common categories
 
-The first stop when looking for the correct operator is finding a related category. Need to filter data from source? Check out the `filtering` operators. Trying to track down a bug, or debug the flow of data through your observable stream? there are `utility` operators that will do the trick. **The operator categories include...**
+The first stop when looking for the correct operator is finding a related category. Need to filter data from source? Check out the [filtering](https://www.learnrxjs.io/learn-rxjs/operators/filtering) operators. Trying to track down a bug, or debug the flow of data through your observable stream? there are [utility](https://www.learnrxjs.io/learn-rxjs/operators/utility) operators that will do the trick. **The operator categories include...**
 
-#### Creation operators
+#### [Creation operators](https://www.learnrxjs.io/learn-rxjs/operators/creation)
 
 These operators allow the creation of an observable from nearly anything. From generic to specific use-cases you are free to turn everything into a stream.
 
-For example, suppose we are creating a progress bar as user scrolls through an article. We could turn the scroll event into a stream by utilizing the `fromEvent` operator:
+For example, suppose we are creating a progress bar as user scrolls through an article. We could turn the scroll event into a stream by utilizing the [fromEvent](https://www.learnrxjs.io/learn-rxjs/operators/creation/fromevent) operator:
 
 ```JS
 fromEvent(scrollContainerElement, 'scroll'){
@@ -184,5 +196,23 @@ fromEvent(scrollContainerElement, 'scroll'){
 }
 ```
 
-The most commonly used creation operators are `of`, `from`, and `fromEvent`.
+The most commonly used creation operators are [of](https://www.learnrxjs.io/learn-rxjs/operators/creation/of), [from](https://www.learnrxjs.io/learn-rxjs/operators/creation/from), and [fromEvent](https://www.learnrxjs.io/learn-rxjs/operators/creation/fromevent).
 
+#### [Combination operators](https://www.learnrxjs.io/learn-rxjs/operators/combination)
+
+The combination operators allow the joining of information from multiple observables. Order, time, and structure of emitted values is the primary variation among these operators.
+
+For example, we can combine updates from multiple data sources to perform a calculation:
+
+```JS
+//give me the last emitted value from each source, whenever either source emits
+combineLatest(sourceOne, sourceTwo).subscribe(
+  ([latestValueFromSourceOne, latestValueFromSourceTwo]) => {
+    // perform calculation
+  }
+);
+```
+
+The most commonly used combination operators are [combineLatest](https://www.learnrxjs.io/learn-rxjs/operators/combination/combinelatest), [concat](https://www.learnrxjs.io/learn-rxjs/operators/combination/concat), [merge](https://www.learnrxjs.io/learn-rxjs/operators/combination/merge), [startWith](https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith), and [withLatestForm](https://www.learnrxjs.io/learn-rxjs/operators/combination/withlatestfrom).
+
+#### [Error handling operators](https://www.learnrxjs.io/learn-rxjs/operators/error_handling)
