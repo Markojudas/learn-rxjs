@@ -216,3 +216,23 @@ combineLatest(sourceOne, sourceTwo).subscribe(
 The most commonly used combination operators are [combineLatest](https://www.learnrxjs.io/learn-rxjs/operators/combination/combinelatest), [concat](https://www.learnrxjs.io/learn-rxjs/operators/combination/concat), [merge](https://www.learnrxjs.io/learn-rxjs/operators/combination/merge), [startWith](https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith), and [withLatestForm](https://www.learnrxjs.io/learn-rxjs/operators/combination/withlatestfrom).
 
 #### [Error handling operators](https://www.learnrxjs.io/learn-rxjs/operators/error_handling)
+
+The error handling operators provide effective ways to gracefully handle errors and perform retries, should they occur.
+
+For example, we can use [catchError](https://www.learnrxjs.io/learn-rxjs/operators/error_handling/catch) to safeguard against failed network requests:
+
+```JS
+source
+ .pipe(
+    mergeMap(value =>{
+      return makeRequest(value).pipe(
+        catchError(handleErrorByReturningObservable)
+      );
+    })
+ )
+ .subscribe(value => {
+  //take action
+ });
+```
+
+The most commonly used error handling operators is [catchError](https://www.learnrxjs.io/learn-rxjs/operators/error_handling/catch).
