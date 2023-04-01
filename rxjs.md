@@ -1,6 +1,6 @@
 # Learn RxJS
 
-[Learn RxJS - Documentation](https://learnrxjs.io)
+[Learn RxJS - Documentation](https://www.learnrxjs.io/)
 
 ## Introduction
 
