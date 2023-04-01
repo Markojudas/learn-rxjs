@@ -139,4 +139,50 @@ In practice, if there is a problem you need to solve, it's more than likely **th
 
 ### Pipe
 
-The `pipe` function is the assembly line from your observable data source through your operators. Just like raw material in a factory goes through a series of stops before it becomes a finished product, source data can pass through a `pipe`-line of operators where you can manipulate, filter, and transform the data to fit your use case. it's not uncommon to use 5 (or more) operators within an observeable chain, contained wihin the `pipe` function
+The `pipe` function is the assembly line from your observable data source through your operators. Just like raw material in a factory goes through a series of stops before it becomes a finished product, source data can pass through a `pipe`-line of operators where you can manipulate, filter, and transform the data to fit your use case. it's not uncommon to use 5 (or more) operators within an observable chain, contained within the `pipe` function.
+
+For instance, a type-ahead solution built with observables may use a group of operators to optimize both the request and display process:
+
+```JS
+//observable of values from a text box, pipe chains operators together
+inputValue
+ .pipe(
+  //wait for a 200ms pause
+  debounceTime(200),
+  //if the value is the same, ignore
+  distinctUntilChanged(),
+  //if an updated value comes through while request is still active cancel previous request and 'switch' to new observable
+  switchMap(searchTerm => typeaheadApi.search(searchTerm))
+ )
+ //create a subscription
+  .subscribe( results => {
+    //update the dom
+  });
+```
+
+**But how do you know which operator fits your use-case? the good news is...**
+
+### Operators can be grouped into common categories
+
+The first stop when looking for the correct operator is finding a related category. Need to filter data from source? Check out the `filtering` operators. Trying to track down a bug, or debug the flow of data through your observable stream? there are `utility` operators that will do the trick. **The operator categories include...**
+
+#### Creation operators
+
+These operators allow the creation of an observable from nearly anything. From generic to specific use-cases you are free to turn everything into a stream.
+
+For example, suppose we are creating a progress bar as user scrolls through an article. We could turn the scroll event into a stream by utilizing the `fromEvent` operator:
+
+```JS
+fromEvent(scrollContainerElement, 'scroll'){
+  .pipe(
+    //we will discuss cleanup strategies like this in future article
+    takenUntil(userLeavesArticle)
+  )
+  .subscribe(event => {
+    // calculate and update DOM
+  });
+}
+```
+
+The most commonly used creation operators are `of`, `from`, and `fromEvent`.
+
