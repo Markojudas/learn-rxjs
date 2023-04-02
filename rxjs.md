@@ -238,7 +238,7 @@ source
 
 The most commonly used error handling operators is [catchError](https://www.learnrxjs.io/learn-rxjs/operators/error_handling/catch).
 
-#### FIltering operators
+#### [FIltering operators](https://www.learnrxjs.io/learn-rxjs/operators/filtering)
 
 The filtering operators provide techniques for accepting - or declining - values from an observable source and dealing with backpressure, or the build up of values within a stream.
 
