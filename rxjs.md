@@ -13,6 +13,7 @@
       - [Creation operators](#creation-operators)
       - [Combination operators](#combination-operators)
       - [Error handling operators](#error-handling-operators)
+      - [FIltering operators](#filtering-operators)
 
 ## Introduction
 
@@ -236,3 +237,17 @@ source
 ```
 
 The most commonly used error handling operators is [catchError](https://www.learnrxjs.io/learn-rxjs/operators/error_handling/catch).
+
+#### FIltering operators
+
+The filtering operators provide techniques for accepting - or declining - values from an observable source and dealing with backpressure, or the build up of values within a stream.
+
+For example, we can use the [take](https://www.learnrxjs.io/learn-rxjs/operators/filtering/take) operator to capture only the first 5 emitted values from a source:
+
+```JS
+source.pipe(take(5)).subscribe(value => {
+  // take action
+});
+```
+
+The most commonly used filtering operators are [debounceTime](https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime), [distinctUntilChanged](https://www.learnrxjs.io/learn-rxjs/operators/filtering/distinctuntilchanged), [filter](https://www.learnrxjs.io/learn-rxjs/operators/filtering/filter), [take](https://www.learnrxjs.io/learn-rxjs/operators/filtering/take), and [takeUntil](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takeuntil)
