@@ -14,6 +14,8 @@
       - [Combination operators](#combination-operators)
       - [Error handling operators](#error-handling-operators)
       - [FIltering operators](#filtering-operators)
+      - [Multicasting operators](#multicasting-operators)
+      - [Transformation operators](#transformation-operators)
 
 ## Introduction
 
@@ -251,3 +253,45 @@ source.pipe(take(5)).subscribe(value => {
 ```
 
 The most commonly used filtering operators are [debounceTime](https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime), [distinctUntilChanged](https://www.learnrxjs.io/learn-rxjs/operators/filtering/distinctuntilchanged), [filter](https://www.learnrxjs.io/learn-rxjs/operators/filtering/filter), [take](https://www.learnrxjs.io/learn-rxjs/operators/filtering/take), and [takeUntil](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takeuntil)
+
+#### [Multicasting operators](https://www.learnrxjs.io/learn-rxjs/operators/multicasting)
+
+In RxJS observables are cold, or unicast (one source per subscriber) by default. These operators can make an observable hot, or multicast, allowing side-effects to be shared among multiple subscribers.
+
+For example, we may want late subscribers to share, and receive the last emitted value from an active source:
+
+```JS
+const source = data.pipe(shareReplay());
+
+const firstSubscriber = source.subscribe(value => {
+// perform some action
+});
+
+// sometime later...
+
+// second subscriber gets last emitted value on subscription, shares execution context
+// with 'firstSubscriber'
+const secondSubscriber = source.subscribe(value => {
+  // perform some action
+});
+```
+
+The most commonly used multicasting operators is [shareReplay](https://www.learnrxjs.io/learn-rxjs/operators/multicasting/sharereplay).
+
+#### [Transformation operators](https://www.learnrxjs.io/learn-rxjs/operators/transformation)
+
+Transforming values as they pass through an operator chain is a common task. These operators provide transformation techniques for nearly any use-case you will encounter.
+
+For example, we may want to accumulate a state object from a source over time, similar to [Redux](https://redux.js.org/):
+
+```JS
+source
+  .pipe(
+    scan((accumulatedState, currentState) = {
+      return { ...accumulatedState, ...currentState };
+    })
+  )
+  .subscribe();
+```
+
+The most commonly used transformation operators are [concatMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap), [map](https://www.learnrxjs.io/learn-rxjs/operators/transformation/map), [mergeMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/mergemap), [scan](https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan), and [switchMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmap).
