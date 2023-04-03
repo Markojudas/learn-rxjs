@@ -367,3 +367,28 @@ While the number of RxJS operators can seem overwhelming at first, these common 
 ### And so
 
 As you become more familiar with push based programming through Observables, you can begin to model all async behavior in your application through observable streams. This opens up simple solutions and flexibility for natably complex behavior.
+
+For instance, suppose we wanted to make a request which saved user activity when they answered a quiz question. OUr initial implementation may use the [mergeMap](https://github.com/btroncone/learn-rxjs/tree/d24267c1126326a59677fdf8404890db581106b9/opearators/transformation/mergemap.md) operator, which fires off a save request on each event:
+
+```JS
+const formEvents = fromEvent(formField, 'click');
+const subscription = formEvents
+ .pipe(
+  map(convertToAppropriateValue),
+  mergeMap(saveRequest)
+ )
+ .subscribe();
+```
+
+Later, it's determined that we need to ensure order of these saves. Armed with the knowledge of operator behavior from above, instead of implementing a complex queueing system we can instead replace the [mergeMap](https://github.com/btroncone/learn-rxjs/tree/d24267c1126326a59677fdf8404890db581106b9/opearators/transformation/mergemap.md) operator with [concatMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap) and push up changes:
+
+```JS
+const formEvents = fromEvent(formField, 'click');
+const subscription = formEvents
+ .pipe(
+  map(convertToAppropriateValue),
+  // now the nest request won't being unitl the previous completes
+  concatMap(saveRequest)
+ )
+ .subscribe();
+```
