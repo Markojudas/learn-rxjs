@@ -18,6 +18,7 @@
       - [Transformation operators](#transformation-operators)
     - [Operators have common behaviors](#operators-have-common-behaviors)
     - [Other similarities between operators](#other-similarities-between-operators)
+    - [And so...](#and-so)
 
 ## Introduction
 
@@ -362,3 +363,7 @@ The are also operators that share a similar goal but offer flexibility in their 
 4. [takeUntil](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takeuntil) when we only want the source to remain active until another source emits.
 
 While the number of RxJS operators can seem overwhelming at first, these common behaviors and patterns can bridge the gap rather quickly while learning RxJS.
+
+### And so
+
+As you become more familiar with push based programming through Observables, you can begin to model all async behavior in your application through observable streams. This opens up simple solutions and flexibility for natably complex behavior.
