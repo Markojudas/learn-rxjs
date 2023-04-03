@@ -16,6 +16,8 @@
       - [FIltering operators](#filtering-operators)
       - [Multicasting operators](#multicasting-operators)
       - [Transformation operators](#transformation-operators)
+    - [Operators have common behaviors](#operators-have-common-behaviors)
+    - [Other similarities between operators](#other-similarities-between-operators)
 
 ## Introduction
 
@@ -295,3 +297,68 @@ source
 ```
 
 The most commonly used transformation operators are [concatMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap), [map](https://www.learnrxjs.io/learn-rxjs/operators/transformation/map), [mergeMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/mergemap), [scan](https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan), and [switchMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmap).
+
+### Operators have common behaviors
+
+While operators can be grouped into common categories, operators within a category often share common behavior. By recognizing this common behavior you can start creating a ['choose your own operator' tree](https://rxjs-dev.firebaseapp.com/operator-decision-tree) in your mind.
+
+**For instance, a large amount of operators can be grouped into...**
+
+#### Operators that flatten
+
+Or, in other words, operators that manage the subscription of an inner obseverable, emitting those values into a single observable source. One common use case for flattening operators is handling HTTP requests in an observable or promise base API, but that is really just scratching the surface:
+
+```JS
+fromEvent(button, 'click')
+ .pipe(
+  mergeMap(value => {
+    //this 'inner' subscription is managed by mergeMap, with response value emitted to observer
+    return makeHttpRequest(value);
+  })
+ )
+ .subscribe(response => {
+  // do something
+ });
+```
+
+**we can then divide the flattening operators into common behaviors like...**
+
+#### Operators that `switch`
+
+Like a light switch, `switch` based operators will turn off (unsubscribe) the current observable and turn on a new observable on emissions from the source. Switch operators are useful in situations you don't want (or need) more than one active observable at a time:
+
+```JS
+inputValueChanges
+ // only the last value is important, if new value comes through cancel previous request / observable
+ .pipe(
+  // make GET request for data
+  switchMap(requestObservable)
+ )
+ .subscribe();
+```
+
+Switch based operators include `switchAll`, [switchMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmap), [switchMapTo](https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmapto).
+
+#### Operators that `concat`
+
+Like your merging lane on the interstate, merge based operators support multiple active observables flowing into one lane in a first come first serve basis. Merge operators are useful in situations where you want to trigger an action when an event from one of many sources occurs:
+
+```JS
+merge(firstObservable, secondObservable)
+ // any emissions from first or second observable as they occur
+ .pipe(mergeMap(saveActivity))
+ .subscribe();
+```
+
+Mere based opeators include [merge](https://www.learnrxjs.io/learn-rxjs/operators/combination/merge), [mergeMap](https://www.learnrxjs.io/learn-rxjs/operators/transformation/mergemap), `mergeMapTo`, and [mergeAll](https://www.learnrxjs.io/learn-rxjs/operators/combination/mergeall)
+
+### Other similarities between operators
+
+The are also operators that share a similar goal but offer flexibility in their triggers. For instance, for ubsubscribing from an observable after a specific condition is met, we could use:
+
+1. [take](https://www.learnrxjs.io/learn-rxjs/operators/filtering/take) when we only ever want `n` values.
+2. [takeLast](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takelast) when we just want the last `n` values.
+3. [takleWhile](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takewhile) when we have a predicate expression to supply.
+4. [takeUntil](https://www.learnrxjs.io/learn-rxjs/operators/filtering/takeuntil) when we only want the source to remain active until another source emits.
+
+While the number of RxJS operators can seem overwhelming at first, these common behaviors and patterns can bridge the gap rather quickly while learning RxJS.
